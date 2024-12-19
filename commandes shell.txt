@@ -1,0 +1,5 @@
+poetry install
+poetry shell
+flask run --debug
+
+poetry add requests

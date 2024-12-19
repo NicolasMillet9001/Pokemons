@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<title>{{_('Pokemon_Title')}}</title>
+{% endblock %}
+
+
+{% block content %}
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        background-color:lightgrey;
+        display: flex;
+        justify-content: center;
+        background-image: url('https://img.goodfon.com/wallpaper/nbig/c/61/anime-art-fon-tekstura-pokemon.webp');
+        background-size: cover;
+        margin: 0;
+        padding: 1em;
+        backdrop-filter: blur(4px);
+        background-attachment: fixed;
+    }
+    .infos{
+        padding:.5em;
+        background-color: white;
+        border: black 1px solid;
+        width: 40%;
+        
+    }
+    #flags img{
+        width: auto;
+        height: 1em;
+        border: 1px black solid;
+        margin-left: .5em;
+    }
+    
+@media screen and (max-width:1200px) {
+    .infos{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    /* .pokemon-img{
+        width:85%!important
+        } */
+}
+</style>
+
+<body>
+    <div class="infos">
+        <div style="display: flex;justify-content: space-between;">
+            <a href="/pokemons?lang={{request.args.get('lang', 'fr')}}">Retour</a>
+            <div id="flags"><a href="?lang=en"><img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg" alt="EN"></a><a href="?lang=fr"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="FR"></a></div>
+        </div>
+        <img src="https://studies.delpech.info/api/pokemons/dataset/{{pokemon['id']}}/svg" id="pokemon-img" style="height:20em;width:auto;max-width:80%;display:flex;margin:0 auto;"></img>
+        
+        <h4>{{_("Pokemon_Name")}} {{ pokemon['name'][request.args.get('lang', 'fr')] }}</h4>
+        
+        <p>Description : {{ pokemon['description'][request.args.get('lang', 'fr')] }}</p>
+        
+        Type(s) :
+        <ul> 
+            {% for type in (pokemon['types']) %}
+            <li class="type">{{ type['name'][request.args.get('lang', 'fr')] }}</li>
+            {% endfor %}
+        </ul>
+        
+        Stats :
+        <ul>
+            {% for stat in (pokemon['stats']) %}
+            <li>{{ stat['stat']|string + ' ' + stat['name'] }}</li>
+            {% endfor %}
+        </ul>
+        
+        <p>{{_("Pokemon_Height")}} {{ pokemon['height'] }}</p>
+        
+        <p>{{_("Pokemon_Weight")}} {{ pokemon['weight'] }}</p>
+        
+        
+    </div>
+</body>
+
+<script>
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var lang = urlParams.get('lang')
+
+    const pokemonTypes = {
+        "Normal": "Brown",
+        "Feu": "Red",
+        "Eau": "Blue",
+        "Électrik": "Yellow",
+        "Plante": "Green",
+        "Glace": "LightBlue",
+        "Combat": "Brown",
+        "Poison": "Purple",
+        "Sol": "Brown",
+        "Vol": "SkyBlue",
+        "Psy": "Pink",
+        "Insecte": "LightGreen",
+        "Roche": "Gray",
+        "Spectre": "Purple",
+        "Dragon": "Purple",
+        "Ténèbres": "Black",
+        "Acier": "Silver",
+        "Fée": "Pink",
+        
+        "Normal": "Brown",
+        "Fire": "Red",
+        "Water": "Blue",
+        "Electric": "Yellow",
+        "Grass": "Green",
+        "Ice": "LightBlue",
+        "Fighting": "Brown",
+        "Poison": "Purple",
+        "Ground": "Brown",
+        "Flying": "SkyBlue",
+        "Psychic": "Pink",
+        "Bug": "LightGreen",
+        "Rock": "Gray",
+        "Ghost": "Purple",
+        "Dragon": "Purple",
+        "Dark": "Black",
+        "Steel": "Silver",
+        "Fairy": "Pink"
+    };
+
+function getPokemonColor(type) {
+    return pokemonTypes[type] || "Unknown";
+}
+
+var types = document.querySelectorAll(".type");
+
+types.forEach(type => {
+    var color = getPokemonColor(type.textContent);
+    type.style.color = color;
+})
+
+</script>
+
+{% endblock %}
