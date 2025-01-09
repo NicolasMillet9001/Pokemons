@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from requests import get
 from flask_assets import Environment, Bundle
 from jinja2 import Environment, PackageLoader, select_autoescape
 from flask_babel import Babel, _
 from redis import StrictRedis
 import json
+from PIL import Image
+
+
 
 app = Flask(__name__)
 
@@ -12,8 +15,7 @@ app = Flask(__name__)
 redis_cli = StrictRedis(
     host='127.0.0.1',
     port=6379,
-    charset="utf-8",
-    decode_responses=True
+    decode_responses=False
 )
 
 # Set your key
@@ -58,7 +60,6 @@ def index():
 
 
 
-
 @app.route('/pokemons/')
 def pokemons():
     # response = get('https://studies.delpech.info/api/pokemons/dataset/json')
@@ -69,18 +70,18 @@ def pokemons():
     
     #Set your key
     if (redis_cli.exists('pokemons')==0):
-        print('Pokemons non cached')
+        print('Pokemons in cache')
 
         response = get('https://studies.delpech.info/api/pokemons/dataset/json')
         if response.status_code == 200:
             redis_cli.set('pokemons', json.dumps(response.json()))
-            redis_cli.expire('pokemons',3600)
+            redis_cli.expire('pokemons',600)
 
         else:
             return str(response.status_code)
 
     else:
-        print('Pokemons cached')
+        print('Pokemons not in cache')
 
     pokemons_data = redis_cli.get('pokemons')
     return render_template('template_liste.html', pokemons=json.loads(pokemons_data))       
@@ -100,10 +101,28 @@ def pokemon(id):
 @app.route('/api/pokemons/<id>')
 def apiPokemons(id):
     response = get('https://studies.delpech.info/api/pokemons/dataset/'+id+'/json')
-    
+
     if response.status_code == 200:
         return response.json()
     
+
+@app.route('/api/imgPokemons/<id>')
+def apiImgPokemons(id):
+    redis_cli.delete('pokemon_img_' + id)
+    cached_image = redis_cli.get('pokemon_img_' + id)
+    if redis_cli.exists('pokemon_img_' + id):
+        print('Pokemon img in cache')
+
+        return cached_image
+    else:
+        print('Pokemon img not in cache')
+        response = get('https://studies.delpech.info/api/pokemons/dataset/' + id + '/png')
+        if response.status_code == 200:
+            img_bytes = response.content
+            redis_cli.set('pokemon_img_' + id, img_bytes, 600)
+            return img_bytes
+        else:
+            return response.status_code
 
 
 
