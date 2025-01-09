@@ -1,0 +1,29 @@
+body{
+    background-color:lightgrey;
+    display: flex;
+    justify-content: center;
+    background-size: cover;
+}
+.infos{
+    padding:.5em;
+    background-color: white;
+    border: black 1px solid;
+    width: 40%;
+
+}
+#flags img{
+    width: auto;
+    height: 1em;
+    border: 1px black solid;
+    margin-left: .5em;
+}
+
+@media screen and (max-width:1200px) {
+    .infos{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:768px) {
+
+}

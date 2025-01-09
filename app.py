@@ -11,6 +11,10 @@ from PIL import Image
 
 app = Flask(__name__)
 
+from assets import set_bundles
+
+set_bundles(app)
+
 #region redis
 redis_cli = StrictRedis(
     host='127.0.0.1',

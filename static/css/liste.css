@@ -1,0 +1,61 @@
+body{
+    background-size: contain;
+}
+
+#div-searchbar{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+#searchbar{
+    height: 3em;
+    width: 30%;
+}
+
+#pokemons{
+    display:flex;
+    flex-wrap: wrap;
+    gap:2em;
+    justify-content: center;
+}
+
+.pokemon{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1em;
+    background-color:white;
+    border:black 1px solid;
+    width:20%;
+    height:20rem;
+    text-decoration: none;
+}
+
+.pokemon img {
+        height: 100%;
+        width: auto;
+        max-width: 90%;
+        padding: 1em;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+.pokemon img.loaded {
+    opacity: 1;
+}
+
+.pokemon > p{
+    color: black;
+}
+
+@media screen and (max-width:1200px){
+    .pokemon{
+        width: 45% !important;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .pokemon{
+        width:85% !important;
+    }
+}
