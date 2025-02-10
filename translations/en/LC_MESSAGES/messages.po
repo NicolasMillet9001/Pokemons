@@ -19,10 +19,10 @@ msgstr ""
 "Generated-By: Babel 2.16.0\n"
 
 msgid "Pokemons_Placeholder_Searchbar"
-msgstr "Pokémon Name"
+msgstr "Pokemon Name"
 
 msgid "Pokemons_Title"
-msgstr "Pokémon List"
+msgstr "Pokemon List"
 
 msgid "Pokemon_Btn_Back"
 msgstr "Back"
@@ -37,4 +37,4 @@ msgid "Pokemon_Weight"
 msgstr "Weight : "
 
 msgid "Pokemon_Title"
-msgstr "Pokémon Details"
+msgstr "Pokemon Details"

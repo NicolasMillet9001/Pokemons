@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
 {% endassets %}
 {{ super() }}
-<title>{{_('Pokemons_Title')}}</title>
+<title>{{ gettext('Pokemons_Title') }}</title>
 {% endblock %}
 
 
@@ -17,7 +17,7 @@
     <div style="position: absolute;right: 3em;"><a href="?lang=en"><img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg" alt="FR" style="width: auto;height: 1em;border: 1px black solid; margin-right: .5em;"></a><a href="?lang=fr"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="FR" style="width: auto;height: 1em;border: 1px black solid;"></a></div>
     <h1 style="text-align: center;">POKEDEX</h1>
     <div id="div-searchbar">
-        <input id="searchbar" type="text" onchange="UpdateDisplayedPokemons()" placeholder="{{_('Pokemons_Placeholder_Searchbar')}}">
+        <input id="searchbar" type="text" onchange="UpdateDisplayedPokemons()" placeholder="{{ gettext('Pokemons_Placeholder_Searchbar') }}">
         
         <select name="select-pokemon-type" id="select-pokemon-type" onchange="UpdateDisplayedPokemons()">
             <option value="">Type</option>
@@ -27,7 +27,7 @@
     
     <div id="pokemons">
         {% for pokemon in (pokemons) %}
-        <a href="/pokemon/{{ pokemon['id'] }}?lang={{request.args.get('lang', 'fr')}}" class="pokemon" data-id="{{ pokemon['id'] }}">
+        <a href="/page/pokemon/{{ pokemon['id'] }}?lang={{request.args.get('lang', 'fr')}}" class="pokemon" data-id="{{ pokemon['id'] }}">
             <img data-src="/api/imgPokemons/{{ pokemon['id'] }}" class="lazy-load" alt="{{pokemon['name'][request.args.get('lang', 'fr')]}}">
             <p class="pokemon-name">{{pokemon['name'][request.args.get('lang', 'fr')]}}</p>
             <p class="pokemon-types" style="display: none;"></p>
