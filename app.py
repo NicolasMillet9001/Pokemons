@@ -53,8 +53,8 @@ Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
 def index():
     return redirect('/page/pokemons')
 
-@app.route('/test')
-def test():
-    response = get('https://studies.delpech.info/api/pokemons/dataset/json')
-    return response.json()    
+# @app.route('/test')
+# def test():
+#     response = get('https://studies.delpech.info/api/pokemons/dataset/json')
+#     return response.json()    
 

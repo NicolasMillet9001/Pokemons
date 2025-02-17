@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from requests import get
 from redis import StrictRedis
+from http import HTTPStatus
 
 api_bp = Blueprint('api', __name__)
 
@@ -14,8 +15,8 @@ redis_cli = StrictRedis(
 def apiPokemons(id):
     response = get('https://studies.delpech.info/api/pokemons/dataset/'+id+'/json')
 
-    if response.status_code == 200:
-        return response.json()
+    if response.status_code == HTTPStatus.OK:
+        return response.json(), HTTPStatus.OK
     
 
 @api_bp.route('/api/imgPokemons/<id>')
@@ -25,13 +26,13 @@ def apiImgPokemons(id):
     if redis_cli.exists('pokemon_img_' + id):
         print('Pokemon img in cache')
 
-        return cached_image
+        return cached_image, HTTPStatus.OK
     else:
         print('Pokemon img not in cache')
         response = get('https://studies.delpech.info/api/pokemons/dataset/' + id + '/png')
-        if response.status_code == 200:
+        if response.status_code == HTTPStatus.OK:
             img_bytes = response.content
             redis_cli.set('pokemon_img_' + id, img_bytes, 600)
-            return img_bytes
+            return img_bytes, HTTPStatus.OK
         else:
-            return response.status_code
+            return HTTPStatus.NOT_FOUND
