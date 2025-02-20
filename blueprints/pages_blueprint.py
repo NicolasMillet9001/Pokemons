@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, Blueprint, jsonify
+from flask import render_template, Blueprint
 from requests import get
 import json
 from redis import StrictRedis

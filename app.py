@@ -1,11 +1,6 @@
-from flask import Flask, render_template, request, send_file, redirect
-from requests import get
-from flask_assets import Environment, Bundle
-from jinja2 import Environment, PackageLoader, select_autoescape
+from flask import Flask, request, redirect
 from flask_babel import Babel, _
 from redis import StrictRedis
-import json
-from PIL import Image
 from blueprints.api_blueprint import api_bp
 from blueprints.pages_blueprint import page_bp
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from requests import get
 from redis import StrictRedis
 from http import HTTPStatus
