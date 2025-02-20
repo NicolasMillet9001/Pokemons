@@ -12,7 +12,7 @@ from blueprints.pages_blueprint import page_bp
 app = Flask(__name__)
 babel = Babel(app)
 
-app.register_blueprint(api_bp)
+app.register_blueprint(api_bp, url_prefix='/api/')
 app.register_blueprint(page_bp, url_prefix='/page/')
 
 from assets import set_bundles
@@ -49,12 +49,7 @@ def get_timezone():
 Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
 #endregion
 
+# Index redirige vers la liste des Pokemons
 @app.route('/')
 def index():
     return redirect('/page/pokemons')
-
-# @app.route('/test')
-# def test():
-#     response = get('https://studies.delpech.info/api/pokemons/dataset/json')
-#     return response.json()    
-

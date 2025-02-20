@@ -11,7 +11,8 @@ redis_cli = StrictRedis(
     decode_responses=False
 )
 
-@api_bp.route('/api/pokemons/<id>')
+# Route pour obtenir les détails des pokemons
+@api_bp.route('/pokemons/<id>')
 def apiPokemons(id):
     response = get('https://studies.delpech.info/api/pokemons/dataset/'+id+'/json')
 
@@ -19,20 +20,27 @@ def apiPokemons(id):
         return response.json(), HTTPStatus.OK
     
 
-@api_bp.route('/api/imgPokemons/<id>')
+# Route pour obtenir les images des pokemons + mise en cache
+@api_bp.route('/imgPokemons/<id>')
 def apiImgPokemons(id):
-    redis_cli.delete('pokemon_img_' + id)
+
     cached_image = redis_cli.get('pokemon_img_' + id)
+
+    # Vérifie si les images sont sauvegardées en cache
     if redis_cli.exists('pokemon_img_' + id):
-        print('Pokemon img in cache')
+        # print('Pokemon img in cache')
 
         return cached_image, HTTPStatus.OK
+    
     else:
-        print('Pokemon img not in cache')
+        # print('Pokemon img not in cache')
         response = get('https://studies.delpech.info/api/pokemons/dataset/' + id + '/png')
+
         if response.status_code == HTTPStatus.OK:
             img_bytes = response.content
+            # Mise en cache de l'image pendant 10 minutes
             redis_cli.set('pokemon_img_' + id, img_bytes, 600)
             return img_bytes, HTTPStatus.OK
+        
         else:
             return HTTPStatus.NOT_FOUND

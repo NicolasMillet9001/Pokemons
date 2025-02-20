@@ -13,16 +13,17 @@ redis_cli = StrictRedis(
 )
 
 
-
+# Page liste des Pokemons
 @page_bp.route('/pokemons/')
 def pokemons():
-    #Set your key
+    # Si les données des pokemons sont sauvegardées en cache 
     if (redis_cli.exists('pokemons')==0):
-        print('Pokemons in cache')
+        # print('Pokemons in cache')
 
         response = get('https://studies.delpech.info/api/pokemons/dataset/json')
         if response.status_code == HTTPStatus.OK:
             redis_cli.set('pokemons', json.dumps(response.json()))
+            # Durée de la mise en cache : 10 min
             redis_cli.expire('pokemons',600)
 
         else:
@@ -35,7 +36,7 @@ def pokemons():
     return render_template('template_liste.html', pokemons=json.loads(pokemons_data)), HTTPStatus.OK       
     
 
-
+# Page détails des Pokemons
 @page_bp.route('/pokemon/<id>')
 def pokemon(id):
     response = get('https://studies.delpech.info/api/pokemons/dataset/'+id+'/json')
@@ -44,3 +45,5 @@ def pokemon(id):
         return render_template('template_pokemon.html', pokemon=response.json()), HTTPStatus.OK
     else:
         return HTTPStatus.NOT_FOUND
+    
+    

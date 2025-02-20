@@ -14,7 +14,7 @@
 <body>
     <div class="infos">
         <div style="display: flex;justify-content: space-between;">
-            <a href="/pokemons?lang={{request.args.get('lang', 'fr')}}">Retour</a>
+            <a href="/page/pokemons?lang={{request.args.get('lang', 'fr')}}">Retour</a>
             <div id="flags"><a href="?lang=en"><img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg" alt="EN"></a><a href="?lang=fr"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="FR"></a></div>
         </div>
         <img src="https://studies.delpech.info/api/pokemons/dataset/{{pokemon['id']}}/svg" id="pokemon-img" style="height:20em;width:auto;max-width:80%;display:flex;margin:0 auto;"></img>
