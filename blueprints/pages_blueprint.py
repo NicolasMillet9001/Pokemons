@@ -3,6 +3,7 @@ from requests import get
 import json
 from redis import StrictRedis
 from http import HTTPStatus
+from marshmallow import Schema, fields
 
 page_bp = Blueprint('page', __name__)
 
@@ -11,6 +12,12 @@ redis_cli = StrictRedis(
     port=6379,
     decode_responses=False
 )
+
+class PokemonSchema(Schema):
+    id = fields.Int()
+    name = fields.Dict(keys=fields.Str(), values=fields.Str())
+    url = fields.Url()
+    lastEdit = fields.Int()
 
 
 # Page liste des Pokemons
@@ -32,8 +39,13 @@ def pokemons():
     else:
         print('Pokemons not in cache')
 
+    # Load les données JSON sur le schema PokemonSchema
     pokemons_data = redis_cli.get('pokemons')
-    return render_template('template_liste.html', pokemons=json.loads(pokemons_data)), HTTPStatus.OK       
+    pokemons_json = json.loads(pokemons_data)
+    pokemon_schema = PokemonSchema(many=True)
+    pokemons = pokemon_schema.load(pokemons_json)
+
+    return render_template('template_liste.html', pokemons=pokemons), HTTPStatus.OK       
     
 
 # Page détails des Pokemons
