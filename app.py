@@ -8,6 +8,7 @@ import json
 from PIL import Image
 from blueprints.api_blueprint import api_bp
 from blueprints.pages_blueprint import page_bp
+# from scss import Compiler, Scss
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -18,6 +19,9 @@ app.register_blueprint(page_bp, url_prefix='/page/')
 from assets import set_bundles
 
 set_bundles(app)
+
+# css = Scss()
+# css.compile()
 
 
 #region redis
